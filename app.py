@@ -1,7 +1,8 @@
 import os
 import psycopg
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from psycopg.rows import dict_row
 
 load_dotenv()
 DATABASE_URL = os.environ["DATABASE_URL"]
@@ -26,6 +27,41 @@ def health():
         return jsonify({"status": "error", "database": "unreachable"}), 503
     
     pass
+
+@app.route("/documents", methods=["POST"])
+def create_document():
+    data = request.get_json()
+    title = data.get("title")
+    description = data.get("description","")
+
+    if not title:
+        return jsonify({"error": "title is required"}), 400
+
+    with psycopg.connect(DATABASE_URL, row_factory = dict_row) as conn:
+        row = conn.execute(
+            "INSERT INTO documents (title, description) VALUES (%s, %s) RETURNING *",
+            (title, description),
+        ).fetchone()
+
+    return jsonify(row), 201
+
+
+@app.route("/documents", methods=["GET"])
+def list_documents():
+    search = request.args.get("q")
+    query = "SELECT * FROM documents"
+    params = ()
+
+    if search:
+        query += " WHERE title ILIKE %s"
+        params = (f"%{search}%",)
+
+    query += " ORDER BY created_at DESC"
+
+    with psycopg.connect(DATABASE_URL, row_factory=dict_row) as conn:
+        rows = conn.execute(query, params).fetchall()
+
+    return jsonify(rows)
 
 
 
