@@ -17,3 +17,19 @@ output "web_sg_id" {
 output "db_sg_id" {
   value = aws_security_group.db.id
 }
+
+output "app_url" {
+  value = "http://${aws_instance.web.public_ip}:5000"
+}
+
+output "health_url" {
+  value = "http://${aws_instance.web.public_ip}:5000/health"
+}
+
+output "rds_endpoint" {
+  value = aws_db_instance.main.address
+}
+
+output "ssh_command" {
+  value = "ssh -i ~/.ssh/dochub-key.pem ec2-user@${aws_instance.web.public_ip}"
+}
