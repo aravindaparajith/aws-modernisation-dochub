@@ -15,3 +15,8 @@ variable "vpc_cidr" {
   type        = string
   default     = "10.1.0.0/16"
 }
+
+variable "my_ip_cidr" {
+  description = "Your public IP in CIDR form, for SSH and app access"
+  type        = string
+}
