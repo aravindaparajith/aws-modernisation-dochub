@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import type { Doc } from "../types";
 
-export default function DocumentList(){
+type Props = { refreshKey: number };
+
+export default function DocumentList({ refreshKey }: Props){
     const [query, setQuery] = useState("");
     const [docs, setDocs] = useState<Doc[]>([]);
     const [loading, setLoading] = useState(true);
@@ -30,7 +32,7 @@ export default function DocumentList(){
             controller.abort();
         }
 
-    }, [query]);
+    }, [query, refreshKey]);
 
     return (
         <section>

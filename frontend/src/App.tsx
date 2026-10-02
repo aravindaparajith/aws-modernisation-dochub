@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import DocumentList from "./components/DocumentList";
+import UploadForm from "./components/UploadForm";
 import './App.css'
 
 type HealthState = "checking" | "healthy" | "unhealthy";
@@ -7,6 +8,8 @@ type HealthState = "checking" | "healthy" | "unhealthy";
 
 function App() {
   const[health, setHealth] = useState<HealthState>("checking");
+  const [showUpload, setShowUpload] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -44,7 +47,26 @@ function App() {
       </header>
 
       <main className="content">
-        <DocumentList />
+        <div className="toolbar">
+          <h2 className="page-title">Documents</h2>
+          {!showUpload && (
+              <button className="btn btn--primary" onClick={() => setShowUpload(true)}>
+                  + Upload document
+              </button>
+          )}
+        </div>
+
+        {showUpload && (
+          <UploadForm 
+            onCancel={() => setShowUpload(false)}
+            onUploaded={() => {
+              setShowUpload(false);
+              setRefreshKey((k) => k + 1);
+            }}
+          />
+        )}
+
+        <DocumentList refreshKey={refreshKey} />
       </main>
     </div>
   );

@@ -98,3 +98,41 @@
 .btn--ghost:hover { background: #dbeafe; }
 
 .no-file { color: #9ca3af; font-size: 0.85rem; font-style: italic; }
+
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.page-title { margin: 0; font-size: 1.4rem; }
+
+.upload-panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: grid;
+  gap: 14px;
+}
+.panel-title { margin: 0; font-size: 1.1rem; }
+
+.field { display: grid; gap: 6px; font-size: 0.9rem; color: #374151; }
+.field input, .field textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+}
+.field input:focus, .field textarea:focus { outline: 2px solid #2563eb; border-color: transparent; }
+
+.form-error { margin: 0; color: #991b1b; font-size: 0.9rem; }
+
+.actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.btn--primary { background: #2563eb; color: #fff; }
+.btn--primary:hover { background: #1d4ed8; }
+.btn--secondary { background: #fff; color: #374151; border-color: #d1d5db; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
