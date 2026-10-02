@@ -117,6 +117,24 @@ def download_doc(doc_id):
         UPLOAD_DIR, row["filename"], as_attachment=True, download_name=original_name
     )
 
+@app.route("/documents/<int:doc_id>", methods=["DELETE"])
+def delete_document(doc_id):
+    with psycopg.connect(DATABASE_URL, row_factory=dict_row) as conn:
+        row = conn.execute(
+            "DELETE FROM documents WHERE id = %s RETURNING filename",
+            (doc_id,),
+        ).fetchone()
+
+    if not row:
+        return jsonify({"error": "not found"}), 404
+
+    if row["filename"]:
+        try:
+            os.remove(os.path.join(UPLOAD_DIR, row["filename"]))
+        except FileNotFoundError:
+            pass
+
+    return "", 204
 
 
 
