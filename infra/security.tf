@@ -47,3 +47,16 @@ resource "aws_vpc_security_group_ingress_rule" "db_from_web" {
   from_port                    = 5432
   to_port                      = 5432
 }
+
+data "aws_ec2_managed_prefix_list" "cloudfront" {
+  name = "com.amazonaws.global.cloudfront.origin-facing"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "web_from_cloudfront" {
+  security_group_id = aws_security_group.web.id
+  description       = "AWS traffic from CloudFront only"
+  prefix_list_id    = data.aws_ec2_managed_prefix_list.cloudfront.id
+  ip_protocol       = "tcp"
+  from_port         = 5000
+  to_port           = 5000
+}

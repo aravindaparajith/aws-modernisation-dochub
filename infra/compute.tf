@@ -84,7 +84,7 @@ resource "aws_instance" "web" {
         [Service]
         User=ec2-user
         WorkingDirectory=/opt/dochub
-        ExecStart=/opt/dochub/.venv/bin/gunicorn -b 0.0.0.0:5000 app:app
+        ExecStart=/opt/dochub/.venv/bin/gunicorn --workers 2 --threads 4 --timeout 60 --access-logfile - -b 0.0.0.0:5000 app:app
         Restart=always
 
         [Install]
