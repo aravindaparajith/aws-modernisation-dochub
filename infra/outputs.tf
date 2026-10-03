@@ -45,3 +45,7 @@ output "frontend_bucket" {
 output "cloudfront_distribution_id" {
   value = aws_cloudfront_distribution.main.id
 }
+
+output "uploads_bucket" {
+  value = aws_s3_bucket.uploads.bucket
+}

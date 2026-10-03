@@ -69,7 +69,7 @@ resource "aws_instance" "web" {
         DB_URL=$(aws ssm get-parameter --name "${aws_ssm_parameter.database_url.name}" \
             --with-decryption --query Parameter.Value --output text --region ${var.region})
         
-        printf 'DATABASE_URL=%s\nUPLOAD_DIR=/opt/dochub/uploads\n' "$DB_URL" > .env
+        printf 'DATABASE_URL=%s\nUPLOAD_DIR=/opt/dochub/uploads\nUPLOAD_BUCKET=%s\nAWS_REGION=%s\n' "$DB_URL" "${aws_s3_bucket.uploads.bucket}" "${var.region}" > .env
         chmod 600 .env
         mkdir -p uploads
 
