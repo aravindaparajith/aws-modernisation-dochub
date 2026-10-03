@@ -1,0 +1,9 @@
+.git
+.venv
+.env
+__pycache__/
+uploads/
+frontend/
+infra/
+*.md
+test-onboarding.txt
